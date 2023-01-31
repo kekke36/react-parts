@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { SubmitHandler, useForm } from "react-hook-form";
 import A from "@/components/parts/A";
 import ActionButton from "@/components/parts/ActionButton";
 import CancelButton from "@/components/parts/CancelButton";
@@ -8,8 +9,26 @@ import Li from "@/components/parts/Li";
 import Select from "@/components/parts/Select";
 import Title from "@/components/parts/Title";
 import Ul from "@/components/parts/Ul";
+import { FieldWrapper } from "@/components/templates/FieldWrapper";
+
+type Inputs = {
+  label1: string;
+  label2: string;
+  select: string;
+};
 
 export default function Home() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    alert("submit!");
+  };
+
   return (
     <>
       <Head>
@@ -19,43 +38,62 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="container mx-auto space-y-2 py-2">
-          <Title>Title</Title>
-          <div className="flex flex-col gap-2 md:flex-row">
-            <div className="basis-1/2">
-              <Label>Label1</Label>
-              <Input />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="container mx-auto space-y-2 py-2">
+            <Title>Title</Title>
+            <div className="flex flex-col gap-2 md:flex-row">
+              <FieldWrapper
+                className="basis-1/2"
+                label="label1"
+                error={errors.label1}
+              >
+                <Input {...register("label1", { required: "必須です" })} />
+              </FieldWrapper>
+              <FieldWrapper
+                className="basis-1/4"
+                label="label2"
+                error={errors.label2}
+              >
+                <Input
+                  {...register("label2", {
+                    maxLength: {
+                      value: 5,
+                      message: "5桁以内で入力してください",
+                    },
+                  })}
+                />
+              </FieldWrapper>
+              <FieldWrapper
+                className="basis-1/4"
+                label="Select"
+                error={errors.select}
+              >
+                <Select {...register("select", { required: "必須です" })}>
+                  <option value="">選択してください</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </Select>
+              </FieldWrapper>
             </div>
-            <div className="basis-1/4">
-              <Label>Label2</Label>
-              <Input />
+            <div>
+              <A href="#">link</A>
             </div>
-            <div className="basis-1/4">
-              <Label>Select</Label>
-              <Select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </Select>
+            <div>
+              <Label>List</Label>
+              <Ul>
+                <Li>Value1</Li>
+                <Li>Value2</Li>
+                <Li>Value3</Li>
+              </Ul>
             </div>
           </div>
-          <div>
-            <A href="#">link</A>
+          <div className="mt-8 flex justify-center gap-2">
+            <CancelButton>Cancel</CancelButton>
+            <ActionButton type="submit">Action</ActionButton>
           </div>
-          <div>
-            <Label>List</Label>
-            <Ul>
-              <Li>Value1</Li>
-              <Li>Value2</Li>
-              <Li>Value3</Li>
-            </Ul>
-          </div>
-        </div>
-        <div className="mt-8 flex justify-center gap-2">
-          <CancelButton>Cancel</CancelButton>
-          <ActionButton>Action</ActionButton>
-        </div>
+        </form>
       </main>
     </>
   );

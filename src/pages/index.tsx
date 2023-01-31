@@ -1,13 +1,13 @@
 import Head from "next/head";
-import A from "../components/A";
-import ActionButton from "../components/ActionButton";
-import CancelButton from "../components/CancelButton";
-import Input from "../components/Input";
-import Label from "../components/Label";
-import Li from "../components/Li";
-import Select from "../components/Select";
-import Title from "../components/Title";
-import Ul from "../components/Ul";
+import A from "@/components/parts/A";
+import ActionButton from "@/components/parts/ActionButton";
+import CancelButton from "@/components/parts/CancelButton";
+import Input from "@/components/parts/Input";
+import Label from "@/components/parts/Label";
+import Li from "@/components/parts/Li";
+import Select from "@/components/parts/Select";
+import Title from "@/components/parts/Title";
+import Ul from "@/components/parts/Ul";
 
 export default function Home() {
   return (

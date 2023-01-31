@@ -1,14 +1,19 @@
-import { ReactNode, SelectHTMLAttributes } from "react";
+import { ComponentPropsWithoutRef, forwardRef } from "react";
 
-const Select = ({
-  children,
-  ...props
-}: SelectHTMLAttributes<HTMLSelectElement> & { children: ReactNode }) => {
+const Select = forwardRef<
+  HTMLSelectElement,
+  ComponentPropsWithoutRef<"select">
+>(({ children, className, ...props }, ref) => {
   return (
-    <select className="w-full rounded border-2 px-1 py-1" {...props}>
+    <select
+      className={`w-full rounded border-2 px-1 py-1 ${className}`}
+      ref={ref}
+      {...props}
+    >
       {children}
     </select>
   );
-};
+});
 
+Select.displayName = "Select";
 export default Select;
